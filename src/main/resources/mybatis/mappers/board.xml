@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+	<select id="getTotalCou" parameterType="string" resultType="int">
+		<![CDATA[
+		select count(*)
+		  from board
+		]]>
+		<if test="_parameter != null and _parameter != ''">
+		 where title like '%${keyword }%'
+		   and contents like '%${keyword }%'
+		</if>
+	</select>
+	<insert id="insert" parameterType="boardvo">
+		<choose>
+			<when test="depth != null and depth > 0">
+			<![CDATA[
+			insert 
+			  into borad( no,
+						  title,
+						  contents,
+						  write_date,
+						  hit,
+						  g_no,
+						  o_no,
+						  depth,
+						  upload_file_name,
+						  original_file_name,
+						  user_no
+			       select null,
+			              #{title},
+			  			  #{contents},
+			  			  now(),
+			  		      0,
+			              g_no,
+			  			  o_no + #{dapth},
+			              depth + #{dapth},
+			              null,
+			              null,
+			              #{userNo}
+					 from borad 
+			  		where no = #{no}
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+			insert 
+			  into borad( no,
+						  title,
+						  contents,
+						  write_date,
+						  hit,
+						  g_no,
+						  o_no,
+						  depth,
+						  upload_file_name,
+						  original_file_name,
+						  user_no
+						)
+ 					select null,
+						   #{title},
+						   #{contents},
+						   now(),
+						   0,
+						   ifnull(max(g_no) + 1, 1),
+						   1,
+						   0,
+						   null,
+						   null,
+						   #{userNo}
+					  from borad
+			]]>
+			</otherwise>
+		</choose>
+	</insert>
+	
+	<update id="updateHit" parameterType="long">
+		<![CDATA[
+			update borad
+			   set hit = hit + 1 
+		     where no = #{value}
+		]]>
+	</update>
+	
+	<update id="update" parameterType="boardvo">
+		<![CDATA[
+			update borad 
+			   set title = #{title},
+				   contents = #{contents} 
+			 where no = #{no} 
+			   and user_no = #{userNo}
+		]]>
+	</update>
+	
+	<delete id="delete" parameterType="boardvo">
+		<![CDATA[
+			delete from borad 
+				  where no = #{no} 
+				    and user_no = #{userNo}
+		]]>
+	</delete>
+	
+	<select id="getList" resultType="boardvo">
+		<![CDATA[
+			select a.no,
+				   a.title,
+				   DATE_FORMAT(a.write_date, '%Y-%m-%d %h:%m:%s') as writeDate,
+				   a.hit,
+				   a.user_no as userNo,
+				   a.depth,
+				   b.name as userName,
+				   c.rownum,
+				   a.upload_file_name as fileName
+			  from borad a,
+				   user b,
+				   (select (count(*) - #{startPage}) as rownum
+					  from borad
+				     where 1=1
+		]]>
+		<if test="kwd != null and kwd != ''">
+					   and (
+					   		title LIKE CONCAT('%', #{kwd} , '%')
+					        or contents LIKE CONCAT('%', #{kwd} , '%')
+					        )
+		</if>
+		<![CDATA[
+				   ) c
+			 where a.user_no = b.no
+		]]>
+		<if test="kwd != null and kwd != ''">
+			   and (
+			   		a.title LIKE CONCAT('%', #{kwd}, '%')
+			   		or a.contents LIKE CONCAT('%', #{kwd}, '%')
+			   	    )
+		</if>
+		<![CDATA[
+			 order by a.g_no desc,
+					  a.o_no asc
+			 limit #{startPage} , #{pageRowCount}
+		]]>
+	</select>
+	
+	<select id="getTotalCount" parameterType="boardvo" resultType="int">
+		<![CDATA[
+			 select count(*) as count
+			   from borad a,
+					user b 
+			  where a.user_no = b.no
+		]]>
+		<if test="kwd != null and kwd != ''">
+			    and (
+			   		 a.title LIKE CONCAT('%', #{kwd} , '%')
+			   		 or a.contents LIKE CONCAT('%', #{kwd} , '%')
+			   	    )
+		</if>
+	</select>
+	
+	<select id="getByLong" parameterType="long" resultType="boardvo">
+		<![CDATA[
+			select a.no, 
+				   a.title, 
+				   a.contents, 
+				   a.user_no as userNo, 
+				   a.upload_file_name as fileName, 
+				   a.original_file_name as OriFileName
+			  from borad a 
+			 where a.no = #{value}
+		]]>
+	</select>
+</mapper>

@@ -22,8 +22,10 @@ public class GuestBookService {
 	}
 	
 	public void insert(GuestBookVo guestBookVo) {
+		long no = 0;
+		no = guestBookDao.insert(guestBookVo);
 		
-		guestBookDao.insert(guestBookVo);
+		System.out.println(no);
 	
 	}
 	

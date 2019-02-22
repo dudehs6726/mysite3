@@ -147,6 +147,51 @@ public class BoardController {
 		return "/board/view";
 	}
 	
+	@RequestMapping(value="view/{no}/{page}/{kwd}", method=RequestMethod.GET)
+	public String view(@PathVariable("no") Long no, @PathVariable("page") Integer page,  @PathVariable("kwd") String kwd, Model model) {
+		/*
+		UserVo authUser = (UserVo)session.getAttribute("authuser");
+		if(authUser == null){
+			return "redirect:/";
+		}
+		*/
+		
+		/*
+		//쿠키
+		boolean isGet = false;
+		Cookie[] cookies = request.getCookies();
+		if(cookies != null) {
+			for(Cookie c: cookies) {
+				if(c.getName().equals(no)) {
+					isGet = true;
+				}
+			}
+			
+			if(!isGet) {
+				//조회 증가 쿼리 메소드
+				new BoardDao().updateHit(Long.valueOf(no));
+				Cookie ck = new Cookie(no, no);
+				ck.setMaxAge(5*60);
+				response.addCookie(ck);
+			}
+		}
+		*/
+		
+		boardService.updateHit(no);
+		BoardVo boardVo = boardService.view(no);
+		
+		if(kwd != null)
+		{
+			boardVo.setKwd(kwd);
+		}else {
+			boardVo.setKwd("");
+		}
+		model.addAttribute("vo", boardVo);
+		model.addAttribute("page", page);
+		
+		return "/board/view";
+	}
+	
 	@RequestMapping(value="modify/{no}/{page}", method=RequestMethod.GET)
 	public String modify(HttpSession session, @PathVariable("no") Long no, @PathVariable("page") Integer page,  Model model) {
 

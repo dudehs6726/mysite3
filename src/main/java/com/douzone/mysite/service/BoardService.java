@@ -21,15 +21,11 @@ public class BoardService {
 		
 		List<BoardVo> list = boardDao.getList(boardVo);
 		//int totalCount = boardDao.getPageList(v_vo, kwd);
-		boardDao.getPageList(boardVo);
+		boardDao.getTotalCount(boardVo);
 		boardDao.makeBlock(boardVo, boardVo.getPage());
 		boardDao.makeLastPageNum(boardVo);
 		
 		//pager 알고리즘
-		
-		
-		
-		
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
@@ -71,6 +67,8 @@ public class BoardService {
 	}
 	
 	public void answer(BoardVo boardVo) {
+		
+		boardVo.setDepth(1);
 		
 		boardDao.answer(boardVo);
 		

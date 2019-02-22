@@ -43,7 +43,7 @@ public class UserController {
 	@RequestMapping(value="login", method=RequestMethod.POST)
 	public String login(HttpSession session, @ModelAttribute UserVo userVo, Model model) {
 		UserVo authUser = userService.login(userVo);
-		
+
 		if(authUser == null)
 		{
 			/* 인증 실패 */
@@ -63,21 +63,19 @@ public class UserController {
 		if(authUser == null){
 			return "redirect:/";
 		}
-		
+
 		UserVo userVo = userService.modifyForm(authUser);
-		
 		model.addAttribute("vo", userVo);
+		
 		return "user/modify";
 	}
 	
 	@RequestMapping(value="modify", method=RequestMethod.POST)
 	public String modify(HttpSession session, @ModelAttribute UserVo userVo) {
-		boolean bl = false;
-		bl = userService.modify(userVo);
+		
+		userService.modify(userVo);
 
-		if(bl) {
-			session.setAttribute("authuser", userVo);
-		}
+		session.setAttribute("authuser", userVo);
 		
 		return "redirect:/";
 	}

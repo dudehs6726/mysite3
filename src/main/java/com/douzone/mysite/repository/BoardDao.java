@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.douzone.mysite.vo.BoardVo;
@@ -17,7 +19,13 @@ import com.douzone.mysite.vo.UserVo;
 @Repository
 public class BoardDao {
 	
-	public boolean insert(BoardVo vo) {
+	@Autowired
+	private SqlSession sqlSession;
+	
+	public void insert(BoardVo vo) {
+		
+		sqlSession.insert("board.insert", vo);
+		/*
 		boolean result = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -79,6 +87,7 @@ public class BoardDao {
 		}
 		
 		return result;
+		*/
 	}
 	
 	public boolean answer(BoardVo vo) {
@@ -147,181 +156,40 @@ public class BoardDao {
 		return result;
 	}
 	
-	public boolean updateHit(long no) {
-		boolean result = false;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+	public void updateHit(long no) {
 		
-		try {
-			conn = getConnection();
-			String sql = " update borad " 
-					+        "set hit = hit + 1 " 
-					+     " where no = ? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setLong(1, no);
-			
-			int count = pstmt.executeUpdate();
-			result = count == 1;
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		sqlSession.update("board.updateHit", no);
 		
-		return result;
 	}
 	
-	public boolean update(BoardVo vo) {
-		boolean result = false;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+	public void update(BoardVo vo) {
 		
-		try {
-			conn = getConnection();
-			String sql = " update borad set "
-					+ "					title = ?, "
-					+ "	  		  		contents = ? " 
-					+ "     	  where no = ? " 
-					+ "         	and user_no = ? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, vo.getTitle());
-			pstmt.setString(2, vo.getContents());
-			pstmt.setLong(3, vo.getNo());
-			pstmt.setLong(4, vo.getUserNo());
-
-			int count = pstmt.executeUpdate();
-			result = count == 1;
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		sqlSession.update("board.update", vo);
 		
-		return result;
 	}
 	
-	public boolean delete(BoardVo vo) {
-		boolean result = false;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+	public void delete(BoardVo vo) {
 		
-		try {
-			conn = getConnection();
-			
-			String sql = "delete from borad " 
-				  + "      where no = ? " 
-				  + "        and user_no = ? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setLong(1, vo.getNo());
-			pstmt.setLong(2, vo.getUserNo());
-			
-			int count = pstmt.executeUpdate();
-			result = count == 1;
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		sqlSession.delete("board.delete", vo);
 		
-		return result;
 	}
 	
-	public BoardVo get(Long v_no) {
-		BoardVo result = null;
-		ResultSet rs = null;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+	public BoardVo get(Long paramNo) {
 		
-		try {
-			conn = getConnection();
-			
-			String sql = "select a.no, a.title, a.contents, a.user_no, a.upload_file_name, a.original_file_name " + 
-						 "  from borad a " + 
-						 " where a.no = ? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setLong(1, v_no);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				
-				long no	=	rs.getLong(1);
-				String title = rs.getString(2);
-				String contents = rs.getString(3);
-				long userNo = rs.getLong(4);
-				String fileName = rs.getString(5);
-				String oriFileName = rs.getString(6);
-				
-				result = new BoardVo();
-				result.setNo(no);
-				result.setTitle(title);
-				result.setContents(contents);
-				result.setUserNo(userNo);
-				result.setFileName(fileName);
-				result.setOriFileName(oriFileName);
-			}
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if(rs != null) {
-					rs.close();
-				}
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		BoardVo boardVo = sqlSession.selectOne("board.getByLong", paramNo);
 		
-		return result;
+		return boardVo;
 	}
 	
-	public List<BoardVo> getList(BoardVo v_vo){
+	public List<BoardVo> getList(BoardVo boardVo){
 		
+		boardVo.setStartPage((boardVo.getPage() -1) * boardVo.getPagerowcount());
+		
+		List<BoardVo> list = sqlSession.selectList("board.getList", boardVo);
+		
+		
+		return list;
+		/*
 		List<BoardVo> list = new ArrayList<BoardVo>();
 		
 		Connection conn = null;
@@ -412,59 +280,13 @@ public class BoardDao {
 		}
 		
 		return list;
+		*/
 	}
 	
-	public void getPageList(BoardVo v_vo){
-		//BoardVo result = null;
-		String kwd = v_vo.getKwd();
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+	public void getTotalCount(BoardVo boardVo){
 		
-		try {
-			conn = getConnection();
-			
-			String sql = "select count(*) as count "
-					+ "  	from borad a, "
-					+ "			 user b " 
-					+ "    where a.user_no = b.no ";
-			if(kwd != null || "".equals(kwd))
-			{
-				sql = sql + "      and (a.title LIKE CONCAT('%', " + kwd + " , '%')"
-				+ "       or a.contents LIKE CONCAT('%', " + kwd + " , '%'))";
-			}
-			sql = sql	+ "    order by a.g_no desc, "
-					+ "				a.o_no asc ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				int totalCount = rs.getInt(1);
-				
-				//result = new BoardVo();
-				v_vo.setTotalCount(totalCount);
-				
-			}
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if(rs != null) {
-					rs.close();
-				}
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		int totalCount = sqlSession.selectOne("board.getTotalCount", boardVo);
+		boardVo.setTotalCount(totalCount);
 		
 	}
 	

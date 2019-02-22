@@ -22,7 +22,14 @@ public class BoardVo {
 	private String fileName;
 	private String OriFileName;
 	private String kwd;
+	private int startPage;
 	
+	public int getStartPage() {
+		return startPage;
+	}
+	public void setStartPage(int startPage) {
+		this.startPage = startPage;
+	}
 	public String getKwd() {
 		return kwd;
 	}

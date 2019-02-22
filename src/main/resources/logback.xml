@@ -30,6 +30,7 @@
 
 	<logger name="com.douzone.mysite.exception" level="debug" additivity="false">
             <appender-ref ref="fileAppenderException" />
+            <appender-ref ref="consoleAppender" />
     </logger>   
 	
 	<root level="info">

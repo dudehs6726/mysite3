@@ -35,10 +35,24 @@
 							<c:choose>
 								<c:when test="${list.depth > 0}">
 									<td style="padding-left:${20*list.depth }px; text-align: left;"><img src="/mysite2/assets/images/reply.png"/>
-									<a href="${pageContext.servletContext.contextPath }/board/view/${list.no }/${vo.page }">${list.title }</a></td>
+									<c:choose>
+										<c:when test="${vo.kwd != null && vo.kwd != ''}">
+											<a href="${pageContext.servletContext.contextPath }/board/view/${list.no }/${vo.page }/${vo.kwd}">${list.title }</a></td>
+										</c:when>
+										<c:otherwise>
+											<a href="${pageContext.servletContext.contextPath }/board/view/${list.no }/${vo.page }">${list.title }</a></td>
+										</c:otherwise>
+									</c:choose>
 								</c:when>
 								<c:otherwise>
-									<td style="text-align: left;"><a href="${pageContext.servletContext.contextPath }/board/view/${list.no }/${vo.page }">${list.title }</a></td>
+									<c:choose>
+										<c:when test="${vo.kwd != null && vo.kwd != ''}">
+											<td style="text-align: left;"><a href="${pageContext.servletContext.contextPath }/board/view/${list.no }/${vo.page }/${vo.kwd}">${list.title }</a></td>
+										</c:when>
+										<c:otherwise>
+											<td style="text-align: left;"><a href="${pageContext.servletContext.contextPath }/board/view/${list.no }/${vo.page }">${list.title }</a></td>
+										</c:otherwise>
+									</c:choose>
 								</c:otherwise>
 							</c:choose>
 							<td>${list.userName }</td>

@@ -22,30 +22,25 @@ public class UserService {
 	
 	public UserVo login(UserVo userVo) {
 
-		String email = userVo.getEmail();
-		String passWord = userVo.getPassword();
+		//String email = userVo.getEmail();
+		//String passWord = userVo.getPassword();
 		
-		UserVo authUser = userDao.get(email, passWord);
+		UserVo authUser = userDao.get(userVo);
 		
 		return authUser;
 	}
 	
 	public UserVo modifyForm(UserVo paramVo) {
 
-		long no = paramVo.getNo();
-
-		UserVo userVo = new UserDao().get(no);
-
+		Long no = paramVo.getNo();
+		UserVo userVo = userDao.get(no);
 		return userVo;
 		
 	}
 	
-	public boolean modify(UserVo paramVo) {
+	public void modify(UserVo paramVo) {
 
-		boolean bl = false;
-		bl = userDao.update(paramVo);
-
-		return bl;
+		userDao.update(paramVo);
 		
 	}
 }

@@ -39,7 +39,14 @@
 					</tr>
 				</table>
 				<div class="bottom">
-					<a href="${pageContext.servletContext.contextPath }/board/list/${page}">글목록</a>
+					<c:choose>
+						<c:when test="${vo.kwd != null && vo.kwd != ''}">
+							<a href="${pageContext.servletContext.contextPath }/board/search/${page}/${vo.kwd}">글목록</a>
+						</c:when>
+						<c:otherwise>
+							<a href="${pageContext.servletContext.contextPath }/board/list/${page}">글목록</a>
+						</c:otherwise>
+					</c:choose>
 					<c:if test="${vo.userNo == authuser.no }">
 						<a href="${pageContext.servletContext.contextPath }/board/modify/${vo.no}/${page}">글수정</a>
 					</c:if>
