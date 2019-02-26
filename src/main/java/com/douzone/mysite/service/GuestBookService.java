@@ -21,17 +21,30 @@ public class GuestBookService {
 		return list;
 	}
 	
-	public void insert(GuestBookVo guestBookVo) {
+	public List<GuestBookVo> list(int page){
+
+		page = (page-1) * 5;
+		
+		List<GuestBookVo> list = guestBookDao.getList(page);
+		
+		return list;
+	}
+	public GuestBookVo get(long no){
+		
+		return guestBookDao.get(no);
+	}
+	
+	public long insert(GuestBookVo guestBookVo) {
 		long no = 0;
 		no = guestBookDao.insert(guestBookVo);
-		
-		System.out.println(no);
+
+		return no;
 	
 	}
 	
-	public void delete(GuestBookVo guestBookVo) {
+	public boolean delete(GuestBookVo guestBookVo) {
 		
-		guestBookDao.delete(guestBookVo);
+		return guestBookDao.delete(guestBookVo);
 	
 	}
 }

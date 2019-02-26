@@ -61,20 +61,25 @@ $(function(){
 		}
 		
 		$.ajax({
-			url: "${pageContext.servletContext.contextPath }/api/user",
-			type: "post",
+			url: "${pageContext.servletContext.contextPath }/user/api/checkemail?email=" + email,
+			type: "get",
 			dataType: "json",
-			data: "a=ajax-checkemail&email=" + email,
+			data: "",
 			success: function(response){
-				if(response.exist == true){
+				if(response.result == "fail"){
+					console.error(response.message);
+					return;
+				}
+				
+				if(response.data == true){
 					alert("이미 존재하는 이메일입니다. 다른 이메일을 사용해 주세요.");
 					$("#email")
 					.val("")
 					.focus();
-					return;
+				}else{
+					$("#btn-checkemail").hide();
+					$("#img-checkemail").show();
 				}
-				$("#btn-checkemail").hide();
-				$("#img-checkemail").show();
 			},
 			error: function(xhr, status, e){
 				console.error(status + ":" + e);

@@ -25,6 +25,29 @@
 				 order by a.no desc
 		]]>
 	</select>
+	<select id="getListByPage" parameterType="Integer" resultType="guestbookvo">
+		<![CDATA[
+				       select a.no,
+							  a.name,
+							  a.password,
+							  a.message,
+							  DATE_FORMAT(a.reg_date, '%Y-%m-%d %h:%m:%s ') as regDate  
+					     from guestbook a
+						order by a.no desc
+						limit #{value}, 5
+		]]>
+	</select>
+	<select id="getByLong" parameterType="Long" resultType="guestbookvo">
+		<![CDATA[
+				       select a.no,
+							  a.name, 
+					          a.password, 
+					          a.message, 
+					          DATE_FORMAT(a.reg_date, '%Y-%m-%d %h:%m:%s ') as regDate
+					     from guestbook a 
+					    where a.no = #{value}
+		]]>
+	</select>
 	<delete id="delete" parameterType="guestbookvo">
 		<![CDATA[
 				delete from guestbook

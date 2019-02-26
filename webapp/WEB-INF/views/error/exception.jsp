@@ -16,8 +16,8 @@
 	==========================================================<br>
 	</P>
 	
-	<p style="color:#f00">
-		${errors }
-	</p>
+	<pre style="color:red; font-weight:bold">	
+		${exception }
+	</pre>
 </body>
 </html>

@@ -2,22 +2,23 @@ package com.douzone.mysite.controller;
 
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.douzone.mysite.repository.BoardDao;
 import com.douzone.mysite.service.BoardService;
 import com.douzone.mysite.vo.BoardVo;
 import com.douzone.mysite.vo.UserVo;
+import com.douzone.security.Auth;
+import com.douzone.security.AuthUser;
+import com.douzone.security.Auth.Role;
 
 @Controller
 @RequestMapping("/board")
@@ -88,13 +89,15 @@ public class BoardController {
 		return "/board/list";
 	}
 	
+	@Auth(Role.ADMIN)
 	@RequestMapping(value="write/{page}", method=RequestMethod.GET)
-	public String write(HttpSession session, @PathVariable("page") Integer page,  Model model) {
+	public String write(@AuthUser UserVo authUser, @PathVariable("page") Integer page,  Model model) {
 
+		/*
 		UserVo authUser = (UserVo)session.getAttribute("authuser");
 		if(authUser == null){
 			return "redirect:/";
-		}
+		}*/
 		
 		model.addAttribute("page", page);
 		model.addAttribute("userNo", authUser.getNo());
@@ -102,6 +105,7 @@ public class BoardController {
 		return "/board/write";
 	}
 	
+	@Transactional
 	@RequestMapping(value="write", method=RequestMethod.POST)
 	public String write(@ModelAttribute BoardVo boardVo) {
 		
@@ -192,14 +196,15 @@ public class BoardController {
 		return "/board/view";
 	}
 	
+	@Auth(Role.ADMIN)
 	@RequestMapping(value="modify/{no}/{page}", method=RequestMethod.GET)
-	public String modify(HttpSession session, @PathVariable("no") Long no, @PathVariable("page") Integer page,  Model model) {
-
+	public String modify(@AuthUser UserVo authUser, @PathVariable("no") Long no, @PathVariable("page") Integer page,  Model model) {
+		/*
 		UserVo authUser = (UserVo)session.getAttribute("authuser");
 		if(authUser == null){
 			return "redirect:/";
 		}
-		
+		*/
 		BoardVo boardVo = boardService.view(no);
 		model.addAttribute("vo", boardVo);
 		model.addAttribute("userNo", authUser.getNo());
@@ -217,13 +222,13 @@ public class BoardController {
 	}
 
 	@RequestMapping(value= "delete/{no}", method=RequestMethod.GET)
-	public String delete(HttpSession session, @PathVariable("no") Long no) {
-
+	public String delete(@AuthUser UserVo authUser, @PathVariable("no") Long no) {
+		/*
 		UserVo authUser = (UserVo)session.getAttribute("authuser");
 		if(authUser == null){
 			return "redirect:/";
 		}
-		
+		*/
 		BoardVo boardVo = new BoardVo();
 		boardVo.setNo(no);
 		boardVo.setUserNo(authUser.getNo());
@@ -233,14 +238,15 @@ public class BoardController {
 		return "redirect:/board/list/1";
 	}
 	
+	@Auth(Role.ADMIN)
 	@RequestMapping(value="answer/{no}/{page}", method=RequestMethod.GET)
-	public String answer(HttpSession session, @PathVariable("no") Long no, @PathVariable("page") Integer page,  Model model) {
-
+	public String answer(@AuthUser UserVo authUser, @PathVariable("no") Long no, @PathVariable("page") Integer page,  Model model) {
+		/*
 		UserVo authUser = (UserVo)session.getAttribute("authuser");
 		if(authUser == null){
 			return "redirect:/";
 		}
-		
+		*/
 		BoardVo boardVo = boardService.view(no);
 		
 		model.addAttribute("page", page);

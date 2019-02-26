@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StopWatch;
 
 import com.douzone.mysite.vo.GuestBookVo;
 import com.douzone.mysite.vo.UserVo;
@@ -26,6 +27,7 @@ public class UserDao {
 	private SqlSession sqlSession;
 	
 	public UserVo get(UserVo paramVo) {
+		
 		//Map 처리 방식
 		/*
 		Map<String, String> map = new HashMap<String, String>();
@@ -33,6 +35,7 @@ public class UserDao {
 		map.put("password", password);
 		*/
 		UserVo userVo = sqlSession.selectOne("user.getByEmailAndPassword", paramVo);
+		
 		return userVo;
 	}
 	
@@ -43,7 +46,10 @@ public class UserDao {
 	
 	public UserVo get(String email) {
 		
-		return sqlSession.selectOne("user.getByEmail", email);
+		UserVo userVo = sqlSession.selectOne("user.getByEmail", email);
+		
+		return userVo;
+		//return sqlSession.selectOne("user.getByEmail", email);
 	}
 	
 	public int insert(UserVo vo) {

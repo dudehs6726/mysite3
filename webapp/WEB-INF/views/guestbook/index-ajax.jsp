@@ -7,7 +7,7 @@
 <head>
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/guestbook-ajax.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath }/assets/css/guestbook-ajax.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style type="text/css">
 #dialog-delete-form p {
@@ -23,7 +23,7 @@
 	border: 1px solid #888;
 }
 </style>
-<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.9.0.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath }/assets/js/jquery/jquery-1.9.0.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 
@@ -52,7 +52,7 @@ var messageBox = function(title, message){
 var render = function(vo, mode){
 	//template library
 	//ex) ejs, underscore, mustache
-	
+
 	var htmls = " <li data-no='"+ vo.no + "'> " +
 					" <strong>" + vo.name + "</strong>" +
 					" <p>" + vo.message.replace(/\n/g, "<br>") + " </p>" +
@@ -76,11 +76,12 @@ var fetchList = function(){
 	
 	++page;
 	$.ajax({
-		url: "/mysite2/api/guestbook?a=ajax-list&p="+page,
+		url: "${pageContext.servletContext.contextPath }/guestbook/api/ajaxList?p="+ page,
 		type: "get",
 		dataType: "json",
 		data:"",
 		success: function(response){
+
 			if(response.result == "fail"){
 				console.warn(response.data);
 				return;
@@ -124,12 +125,13 @@ $(function(){
 				
 				
 				$.ajax({
-					url: "${pageContext.servletContext.contextPath }/api/guestbook",
+					url: "${pageContext.servletContext.contextPath }/guestbook/api/ajaxDelete",
 					type: "post",
 					dataType: "json",
-					data: "a=ajax-delete&no=" + $hiddenNo.val()
+					data: "no=" + $hiddenNo.val()
 					     + "&password=" + $passwordDelete.val(),
 					success: function(response){
+						
 						if(response.result == "fail"){
 							$(".validateTipsNormal").hide();
 							$(".validateTipsError").show();
@@ -137,7 +139,8 @@ $(function(){
 							return;
 						}
 						
-						if(response.result == "succress"){
+						if(response.result == "success"){
+							
 							//rendering
 							$("#list-guestbook li[data-no="+response.data+"]").remove();
 							dialogDelete.dialog("close");
@@ -204,19 +207,20 @@ $(function(){
 		}
 		
 		$.ajax({
-			url: "${pageContext.servletContext.contextPath }/api/guestbook",
+			url: "${pageContext.servletContext.contextPath }/guestbook/api/ajaxInsert",
 			type: "post",
 			dataType: "json",
-			data: "a=ajax-insert&name=" + name
+			data: "name=" + name
 			     + "&password=" + password
 			     + "&message=" + content,
 			success: function(response){
+
 				if(response.result == "fail"){
 					console.warn(response.data);
 					return;
 				}
 				
-				if(response.result == "succress"){
+				if(response.result == "success"){
 					//rendering
 					render(response.data, true);
 					$inputName.val("");

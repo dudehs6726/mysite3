@@ -12,6 +12,9 @@
 					<li><a href="${pageContext.servletContext.contextPath }/user/join">회원가입</a><li>
 				</c:when>
 				<c:otherwise>
+					<c:if test="${authuser.role == 'ADMIN' }">
+						<li><a href="${pageContext.servletContext.contextPath }/admin">관리자페이지</a><li>
+					</c:if>
 					<li><a href="${pageContext.servletContext.contextPath }/user/modify">회원정보수정</a><li>
 					<li><a href="${pageContext.servletContext.contextPath }/user/logout">로그아웃</a><li>
 					<li>${authuser.name }님 안녕하세요 ^^;</li>

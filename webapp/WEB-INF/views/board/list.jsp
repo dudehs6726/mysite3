@@ -34,7 +34,7 @@
 							<td>${list.rownum-status.index }</td>
 							<c:choose>
 								<c:when test="${list.depth > 0}">
-									<td style="padding-left:${20*list.depth }px; text-align: left;"><img src="/mysite2/assets/images/reply.png"/>
+									<td style="padding-left:${20*list.depth }px; text-align: left;"><img src="${pageContext.servletContext.contextPath }/assets/images/reply.png"/>
 									<c:choose>
 										<c:when test="${vo.kwd != null && vo.kwd != ''}">
 											<a href="${pageContext.servletContext.contextPath }/board/view/${list.no }/${vo.page }/${vo.kwd}">${list.title }</a></td>

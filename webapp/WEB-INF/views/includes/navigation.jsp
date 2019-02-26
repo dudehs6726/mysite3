@@ -8,25 +8,25 @@
 					<c:when test='${param.menu == "main" }'>
 					<li class="selected"><a href="${pageContext.servletContext.contextPath }">주영돈</a></li>
 					<li><a href="${pageContext.servletContext.contextPath }/guestbook/list">방명록</a></li>
-					<li><a href="${pageContext.servletContext.contextPath }/guestbook/ajax">방명록(Ajax)</a></li>
+					<li><a href="${pageContext.servletContext.contextPath }/guestbook/api/">방명록(Ajax)</a></li>
 					<li><a href="${pageContext.servletContext.contextPath }/board/list/1">게시판</a></li>
 					</c:when>
 					<c:when test='${param.menu == "guestbook" }'>
 					<li><a href="${pageContext.servletContext.contextPath }">주영돈</a></li>
 					<li class="selected"><a href="${pageContext.servletContext.contextPath }/guestbook/list">방명록</a></li>
-					<li><a href="${pageContext.servletContext.contextPath }/guestbook/ajax">방명록(Ajax)</a></li>
+					<li><a href="${pageContext.servletContext.contextPath }/guestbook/api/">방명록(Ajax)</a></li>
 					<li><a href="${pageContext.servletContext.contextPath }/board/list/1">게시판</a></li>
 					</c:when>
 					<c:when test='${param.menu == "guestbook-ajax" }'>
 					<li><a href="${pageContext.servletContext.contextPath }">주영돈</a></li>
 					<li ><a href="${pageContext.servletContext.contextPath }/guestbook/list">방명록</a></li>
-					<li class="selected"><a href="${pageContext.servletContext.contextPath }/guestbook/ajax">방명록(Ajax)</a></li>
+					<li class="selected"><a href="${pageContext.servletContext.contextPath }/guestbook/api/">방명록(Ajax)</a></li>
 					<li><a href="${pageContext.servletContext.contextPath }/board/list/1">게시판</a></li>
 					</c:when>
 					<c:otherwise>
 					<li><a href="${pageContext.servletContext.contextPath }">주영돈</a></li>
 					<li><a href="${pageContext.servletContext.contextPath }/guestbook/list">방명록</a></li>
-					<li><a href="${pageContext.servletContext.contextPath }/guestbook/ajax">방명록(Ajax)</a></li>
+					<li><a href="${pageContext.servletContext.contextPath }/guestbook/api/">방명록(Ajax)</a></li>
 					<li class="selected"><a href="${pageContext.servletContext.contextPath }/board/list/1">게시판</a></li>
 					</c:otherwise>
 				</c:choose>
