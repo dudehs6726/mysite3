@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gallery">
+
+	<select id="getList" resultType="galleryvo">
+		<![CDATA[
+				select a.no, 
+					   a.comment, 
+					   a.image_url as imageUrl
+				  from gallery a  
+				 order by a.no desc
+		]]>
+	</select>
+	
+	<select id="getByNo" parameterType="Integer" resultType="galleryvo">
+		<![CDATA[
+				select a.no, 
+					   a.comment, 
+					   a.image_url as imageUrl
+				  from gallery a  
+				 where a.no = #{value}
+		]]>
+	</select>
+	
+	<insert id="insert" parameterType="boardvo">
+		<![CDATA[
+			insert 
+			  into gallery ( no,
+						  comment,
+						  image_url
+						  )
+				 values (null, #{comment}, #{imageUrl} )
+						  
+			]]>
+	</insert>
+	
+	<delete id="delete" parameterType="Integer">
+		<![CDATA[
+			delete from gallery 
+				  where no = #{value}
+						  
+			]]>
+	</delete>
+</mapper>

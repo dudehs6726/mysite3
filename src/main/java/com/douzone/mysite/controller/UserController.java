@@ -41,7 +41,7 @@ public class UserController {
 		return "user/login";
 	}
 	
-	@Auth(Role.ADMIN)
+	@Auth(Role.USER)
 	@RequestMapping(value="/modify", method=RequestMethod.GET)
 	public String modify(@AuthUser UserVo authUser, Model model) {
 		
