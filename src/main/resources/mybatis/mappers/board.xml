@@ -25,8 +25,14 @@
 						  g_no,
 						  o_no,
 						  depth,
-						  upload_file_name,
-						  original_file_name,
+			]]>
+						  <if test="fileName != null and fileName != ''">
+		     				upload_file_name,
+						  </if>
+						  <if test="OriFileName != null and OriFileName != ''">
+		     				original_file_name,
+						  </if>
+			<![CDATA[
 						  user_no
 			       select null,
 			              #{title},
@@ -36,8 +42,14 @@
 			              g_no,
 			  			  o_no + #{dapth},
 			              depth + #{dapth},
-			              null,
-			              null,
+			]]>
+			              <if test="fileName != null and fileName != ''">
+		     				#{fileName},
+						  </if>
+						  <if test="OriFileName != null and OriFileName != ''">
+		     				#{OriFileName},
+						  </if>
+			<![CDATA[
 			              #{userNo}
 					 from borad 
 			  		where no = #{no}
@@ -54,8 +66,14 @@
 						  g_no,
 						  o_no,
 						  depth,
-						  upload_file_name,
-						  original_file_name,
+			]]>
+						  <if test="fileName != null and fileName != ''">
+		     				upload_file_name,
+						  </if>
+						  <if test="OriFileName != null and OriFileName != ''">
+		     				original_file_name,
+						  </if>
+			<![CDATA[
 						  user_no
 						)
  					select null,
@@ -66,8 +84,14 @@
 						   ifnull(max(g_no) + 1, 1),
 						   1,
 						   0,
-						   null,
-						   null,
+			]]>
+						   <if test="fileName != null and fileName != ''">
+		     				#{fileName},
+						   </if>
+						   <if test="OriFileName != null and OriFileName != ''">
+		     				#{OriFileName},
+						   </if>
+			<![CDATA[
 						   #{userNo}
 					  from borad
 			]]>

@@ -1,8 +1,13 @@
 package com.douzone.mysite.vo;
 
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.web.multipart.MultipartFile;
+
 public class BoardVo {
 	private long no;
+	@NotEmpty
 	private String title;
+	@NotEmpty
 	private String contents;
 	private String writeDate;
 	private int hit;
@@ -23,6 +28,8 @@ public class BoardVo {
 	private String OriFileName;
 	private String kwd;
 	private int startPage;
+	
+	MultipartFile file;
 	
 	public int getStartPage() {
 		return startPage;
@@ -154,21 +161,25 @@ public class BoardVo {
 	public void setOriFileName(String oriFileName) {
 		OriFileName = oriFileName;
 	}
+	
+	
+			
+	public MultipartFile getFile() {
+		return file;
+	}
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "BoardVo [no=" + no + ", title=" + title + ", contents=" + contents + ", writeDate=" + writeDate
 				+ ", hit=" + hit + ", gNo=" + gNo + ", oNo=" + oNo + ", depth=" + depth + ", userNo=" + userNo
 				+ ", userName=" + userName + ", blockStartNum=" + blockStartNum + ", blockLastNum=" + blockLastNum
 				+ ", lastPageNum=" + lastPageNum + ", page=" + page + ", totalCount=" + totalCount + ", rownum="
-				+ rownum + ", fileName=" + fileName + ", OriFileName=" + OriFileName + ", getNo()=" + getNo()
-				+ ", getTitle()=" + getTitle() + ", getContents()=" + getContents() + ", getWriteDate()="
-				+ getWriteDate() + ", getHit()=" + getHit() + ", getgNo()=" + getgNo() + ", getoNo()=" + getoNo()
-				+ ", getDepth()=" + getDepth() + ", getUserNo()=" + getUserNo() + ", getUserName()=" + getUserName()
-				+ ", getBlockStartNum()=" + getBlockStartNum() + ", getBlockLastNum()=" + getBlockLastNum()
-				+ ", getLastPageNum()=" + getLastPageNum() + ", getPage()=" + getPage() + ", getTotalCount()="
-				+ getTotalCount() + ", getRownum()=" + getRownum() + ", getFileName()=" + getFileName()
-				+ ", getOriFileName()=" + getOriFileName() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+				+ rownum + ", fileName=" + fileName + ", OriFileName=" + OriFileName + ", kwd=" + kwd + ", startPage="
+				+ startPage + ", file=" + file + "]";
 	}
 	
 }

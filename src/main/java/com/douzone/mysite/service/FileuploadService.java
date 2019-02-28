@@ -62,8 +62,8 @@ public class FileuploadService {
 	
 	public void deleteFile(String fileUrl) {
 		//파일 삭제
-		String sFilePath = "D:" + fileUrl.replace("images/", "");
-		System.out.println(sFilePath);
+		String sFilePath = fileUrl.replace("images/", "");
+
 		File f = new File(sFilePath);
 			
 		if(f.exists()) {
