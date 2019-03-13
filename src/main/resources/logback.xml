@@ -33,6 +33,7 @@
             <appender-ref ref="consoleAppender" />
     </logger>   
 	
+	<!-- 루트(글로벌) 로거 -->
 	<root level="info">
 		<appender-ref ref="consoleAppender" />
 	</root>

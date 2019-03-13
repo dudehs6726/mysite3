@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,10 @@
 		<c:import url ="/WEB-INF/views/includes/header.jsp"/>
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.servletContext.contextPath }/board/modify">
+				<form:form class="board-form"
+					modelAttribute="boardVo"
+				 	method="post" 
+				 	action="${pageContext.servletContext.contextPath }/board/modify">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글수정</th>
@@ -22,24 +26,28 @@
 						<tr>
 							<td class="label">제목</td>
 							<td>
-								<input type="text" name="title" value="${vo.title }">
-								<input type="hidden" name="no" value="${vo.no }">
-								<input type="hidden" name="userNo" value="${userNo }">
+								<form:input path="title" />
+								<!-- <input type="text" name="title" value="${vo.title }">  -->
+								<form:hidden path="no"/>
+								<form:hidden path="userNo"/>
+								<!-- <input type="hidden" name="no" value="${vo.no }">
+								<input type="hidden" name="userNo" value="${userNo }">  -->
 							</td>
 							
 						</tr>
 						<tr>
 							<td class="label">내용</td>
 							<td>
-								<textarea id="content" name="contents">${vo.contents }</textarea>
+								<form:textarea id="content" path="contents"/>
+								<!-- <textarea id="content" name="contents">${vo.contents }</textarea>  -->
 							</td>
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="${pageContext.servletContext.contextPath }/board/view/${vo.no }/${page}">취소</a>
+						<a href="${pageContext.servletContext.contextPath }/board/view/${no}/${page}">취소</a>
 						<input type="submit" value="수정">
 					</div>
-				</form>				
+				</form:form>				
 			</div>
 		</div>
 		<c:import url ="/WEB-INF/views/includes/navigation.jsp"/>

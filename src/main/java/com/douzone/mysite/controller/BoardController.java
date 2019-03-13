@@ -105,7 +105,7 @@ public class BoardController {
 		if(authUser == null){
 			return "redirect:/";
 		}*/
-		
+		System.out.println(authUser);
 		model.addAttribute("page", page);
 		model.addAttribute("userNo", authUser.getNo());
 		
@@ -221,15 +221,20 @@ public class BoardController {
 	
 	@Auth(Role.USER)
 	@RequestMapping(value="modify/{no}/{page}", method=RequestMethod.GET)
-	public String modify(@AuthUser UserVo authUser, @PathVariable("no") Long no, @PathVariable("page") Integer page,  Model model) {
+	public String modify(
+			@AuthUser UserVo authUser,
+			@ModelAttribute BoardVo boardVo,
+			@PathVariable("no") Long no, 
+			@PathVariable("page") Integer page,  
+			Model model) {
 		/*
 		UserVo authUser = (UserVo)session.getAttribute("authuser");
 		if(authUser == null){
 			return "redirect:/";
 		}
 		*/
-		BoardVo boardVo = boardService.view(no);
-		model.addAttribute("vo", boardVo);
+		boardVo = boardService.view(no);
+		model.addAttribute("boardVo", boardVo);
 		model.addAttribute("userNo", authUser.getNo());
 		model.addAttribute("page", page);
 		
